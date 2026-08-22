@@ -11,7 +11,7 @@ const STATUS_CLASS = {
   Pending: 'st-pending', Confirmed: 'st-confirmed', Packed: 'st-packed',
   'Out for delivery': 'st-delivering', Delivered: 'st-delivered', Cancelled: 'st-cancelled',
 };
-const METHOD_NAMES = { same_day: 'Same-day Lagos', next_day: 'Next-day Lagos', nationwide: 'Nationwide', pickup: 'Pickup' };
+const METHOD_NAMES = { same_day: 'Same-day Ibadan', next_day: 'Next-day Ibadan', nationwide: 'Nationwide', pickup: 'Pickup at Bodija market' };
 const PAY_NAMES = { pod: 'Pay on delivery', transfer: 'Bank transfer', card: 'Card' };
 const PRESET_IMAGES = [
   '/img/products/rice.jpg', '/img/products/ofada.jpg', '/img/products/beans.jpg',

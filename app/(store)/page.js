@@ -32,7 +32,7 @@ export default async function HomePage() {
             <h1>Your One-Stop Shop<br />for Quality <span className="hl">Foodstuffs</span></h1>
             <ul className="hero-points">
               <li><span className="tick">✓</span> 100% fresh &amp; hand-picked from trusted markets</li>
-              <li><span className="tick">✓</span> Same-day delivery across Lagos</li>
+              <li><span className="tick">✓</span> Same-day delivery across Ibadan</li>
               <li><span className="tick">✓</span> Pay on delivery — inspect before you pay</li>
             </ul>
             <div className="hero-ctas">
@@ -51,7 +51,7 @@ export default async function HomePage() {
             </div>
             <div className="hero-float hf-1">
               <span className="ficon" style={{ background: '#e5f7ed', color: '#007848' }}>⚡</span>
-              <span>Same-day delivery<small>Lagos mainland &amp; island</small></span>
+              <span>Same-day delivery<small>Ibadan &amp; environs</small></span>
             </div>
             <div className="hero-float hf-2">
               <span className="ficon" style={{ background: '#fff7e8', color: '#d97706' }}>💵</span>
@@ -193,7 +193,7 @@ export default async function HomePage() {
               <blockquote>&ldquo;I&rsquo;ve tried several foodstuff delivery services, and this one is by far the best. The website is user-friendly, the selection is vast, and the customer service is outstanding. Highly recommend!&rdquo;</blockquote>
               <div className="testi-who">
                 <span className="avatar" style={{ background: '#007848' }}>CN</span>
-                <div><b>Chiamaka Nwosu</b><small>Yaba, Lagos</small></div>
+                <div><b>Chiamaka Nwosu</b><small>Bodija, Ibadan</small></div>
               </div>
             </div>
             <div className="testi-card testi-quote-card">
@@ -201,15 +201,15 @@ export default async function HomePage() {
               <blockquote>&ldquo;Ordered 25kg of rice and honey beans in the morning — it was at my gate by 4pm. Stone-free rice, pure palm oil. Omo Oni Rice is now my plug for everything!&rdquo;</blockquote>
               <div className="testi-who">
                 <span className="avatar" style={{ background: '#d97706' }}>TB</span>
-                <div><b>Tunde Adebayo</b><small>Ikeja, Lagos</small></div>
+                <div><b>Tunde Adebayo</b><small>Dugbe, Ibadan</small></div>
               </div>
             </div>
             <div className="testi-card testi-quote-card">
               <div className="stars">★★★★★</div>
-              <blockquote>&ldquo;The rodo and tomatoes arrived looking like I picked them myself at Mile 12. Fresh, firm and fairly priced. Pay-on-delivery gives me total peace of mind.&rdquo;</blockquote>
+              <blockquote>&ldquo;The rodo and tomatoes arrived looking like I picked them myself at Bodija market. Fresh, firm and fairly priced. Pay-on-delivery gives me total peace of mind.&rdquo;</blockquote>
               <div className="testi-who">
                 <span className="avatar" style={{ background: '#054d2e' }}>FB</span>
-                <div><b>Fatima Bello</b><small>Surulere, Lagos</small></div>
+                <div><b>Fatima Bello</b><small>Mokola, Ibadan</small></div>
               </div>
             </div>
           </div>
@@ -273,7 +273,7 @@ export default async function HomePage() {
           <div className="features-band">
             <div className="feature-cell">
               <span className="ficon" style={{ background: '#e5f7ed' }}>🚚</span>
-              <div><b>Free Shipping</b><p>Free shipping for orders above ₦50,000 (Lagos)</p></div>
+              <div><b>Free Shipping</b><p>Free shipping for orders above ₦50,000 (Ibadan)</p></div>
             </div>
             <div className="feature-cell">
               <span className="ficon" style={{ background: '#fff7e8' }}>💳</span>

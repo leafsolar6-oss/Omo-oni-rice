@@ -6,7 +6,7 @@ export const metadata = {
     template: '%s — Omo Oni Rice',
   },
   description:
-    'Omo Oni Rice: quality Nigerian foodstuffs — rice, beans, garri, yam, palm oil, pepper and more. Same-day delivery across Lagos, pay on delivery.',
+    'Omo Oni Rice: quality Nigerian foodstuffs — rice, beans, garri, yam, palm oil, pepper and more. Same-day delivery across Ibadan, pay on delivery.',
 };
 
 export default function RootLayout({ children }) {

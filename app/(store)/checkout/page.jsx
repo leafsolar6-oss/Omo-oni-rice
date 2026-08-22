@@ -9,10 +9,10 @@ import { Icons } from '../../../lib/icons';
 const FREE_AT = 50000;
 
 const METHODS = [
-  { key: 'same_day', icon: Icons.bolt, name: 'Same-day Lagos', desc: 'Order before 3pm, delivered today. Lagos mainland & island.', fee: 2500 },
-  { key: 'next_day', icon: Icons.truck, name: 'Next-day Lagos', desc: 'Delivered tomorrow. Anywhere in Lagos.', fee: 1500 },
+  { key: 'same_day', icon: Icons.bolt, name: 'Same-day Ibadan', desc: 'Order before 3pm, delivered today. Ibadan & environs.', fee: 2500 },
+  { key: 'next_day', icon: Icons.truck, name: 'Next-day Ibadan', desc: 'Delivered tomorrow. Anywhere in Ibadan.', fee: 1500 },
   { key: 'nationwide', icon: '🚛', name: 'Nationwide', desc: '2–5 working days to anywhere in Nigeria.', fee: 5000 },
-  { key: 'pickup', icon: Icons.store, name: 'Pickup at shop', desc: 'Free pickup at Ogudu market, Mon–Sat, 8am–7pm.', fee: 0 },
+  { key: 'pickup', icon: Icons.store, name: 'Pickup at shop', desc: 'Free pickup at Bodija market, Mon–Sat, 8am–7pm.', fee: 0 },
 ];
 const PAYMENTS = [
   { key: 'pod', icon: Icons.cash, name: 'Pay on delivery', desc: 'Inspect your items, then pay cash or transfer.' },
@@ -202,11 +202,11 @@ export default function CheckoutPage() {
             </div>
             <div className="field"><label htmlFor="f-address">Street address *</label><input className="input" id="f-address" name="address" placeholder="House number & street" required={methodKey !== 'pickup'} /></div>
             <div className="form-grid">
-              <div className="field"><label htmlFor="f-city">Area / town *</label><input className="input" id="f-city" name="city" placeholder="e.g. Yaba, Ikeja, Lekki" required={methodKey !== 'pickup'} /></div>
+              <div className="field"><label htmlFor="f-city">Area / town *</label><input className="input" id="f-city" name="city" placeholder="e.g. Bodija, Dugbe, Mokola" required={methodKey !== 'pickup'} /></div>
               <div className="field">
                 <label htmlFor="f-state">State</label>
-                <select className="select" id="f-state" name="state" defaultValue="Lagos">
-                  <option>Lagos</option><option>Abuja (FCT)</option><option>Ogun</option><option>Oyo</option>
+                <select className="select" id="f-state" name="state" defaultValue="Oyo">
+                  <option>Oyo</option><option>Lagos</option><option>Abuja (FCT)</option><option>Ogun</option>
                   <option>Rivers</option><option>Kano</option><option>Kaduna</option><option>Enugu</option>
                   <option>Delta</option><option>Other</option>
                 </select>

@@ -17,8 +17,8 @@ const STATUS_CLASS = {
   'Out for delivery': 'st-delivering', Delivered: 'st-delivered', Cancelled: 'st-cancelled',
 };
 const METHOD_NAMES = {
-  same_day: 'Same-day Lagos', next_day: 'Next-day Lagos',
-  nationwide: 'Nationwide (2–5 days)', pickup: 'Pickup at Ogudu market',
+  same_day: 'Same-day Ibadan', next_day: 'Next-day Ibadan',
+  nationwide: 'Nationwide (2–5 days)', pickup: 'Pickup at Bodija market',
 };
 const PAY_NAMES = { pod: 'Pay on delivery', transfer: 'Bank transfer', card: 'Card payment' };
 

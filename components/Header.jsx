@@ -54,7 +54,7 @@ export default function Header() {
   return (
     <>
       <div className="topbar">
-        <div className="container">🚚 Same-day delivery across Lagos &nbsp;·&nbsp; 💵 Pay on delivery &nbsp;·&nbsp; 🎉 <b>Free Lagos delivery on orders over ₦50,000</b></div>
+        <div className="container">🚚 Same-day delivery across Ibadan &nbsp;·&nbsp; 💵 Pay on delivery &nbsp;·&nbsp; 🎉 <b>Free Ibadan delivery on orders over ₦50,000</b></div>
       </div>
       <header className="site-header">
         <div className="container header-inner">

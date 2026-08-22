@@ -9,7 +9,7 @@ const FAQS = [
   },
   {
     q: 'What are your delivery hours?',
-    a: 'Lagos orders placed before 3pm are delivered the same day (Mon–Sat). Orders after 3pm go out the next morning. Nationwide deliveries take 2–5 working days. You can also pick up free at our Ogudu market shop, 8am–7pm.',
+    a: 'Ibadan orders placed before 3pm are delivered the same day (Mon–Sat). Orders after 3pm go out the next morning. Nationwide deliveries take 2–5 working days. You can also pick up free at our Bodija market shop, 8am–7pm.',
   },
   {
     q: 'What payment methods do you accept?',
@@ -17,7 +17,7 @@ const FAQS = [
   },
   {
     q: 'Do you offer any discounts or promotions?',
-    a: 'Plenty! Free Lagos delivery on orders over ₦50,000, fresh deals of the day every morning, and 25% off your first order when you subscribe to our newsletter. Bulk orders get special pricing — just call us.',
+    a: 'Plenty! Free Ibadan delivery on orders over ₦50,000, fresh deals of the day every morning, and 25% off your first order when you subscribe to our newsletter. Bulk orders get special pricing — just call us.',
   },
   {
     q: 'How can I provide feedback about my experience?',

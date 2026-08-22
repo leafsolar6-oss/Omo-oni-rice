@@ -106,8 +106,8 @@ export default function CartPage() {
             <div className="free-progress">
               <p>
                 {toFree > 0
-                  ? <>Add {fmt(toFree)} more for <b style={{ color: 'var(--g700)' }}>FREE Lagos delivery</b> 🎉</>
-                  : <>You have unlocked <b style={{ color: 'var(--g700)' }}>FREE Lagos delivery</b> 🎉</>}
+                  ? <>Add {fmt(toFree)} more for <b style={{ color: 'var(--g700)' }}>FREE Ibadan delivery</b> 🎉</>
+                  : <>You have unlocked <b style={{ color: 'var(--g700)' }}>FREE Ibadan delivery</b> 🎉</>}
               </p>
               <div className="bar"><i style={{ width: `${pct}%` }} /></div>
             </div>

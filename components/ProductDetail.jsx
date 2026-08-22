@@ -89,10 +89,10 @@ export default function ProductDetail({ product, related }) {
           </div>
 
           <div className="delivery-box">
-            <div className="drow"><span className="ficon"><span dangerouslySetInnerHTML={{ __html: Icons.truck }} /></span><div><b>Same-day Lagos</b><span>Order before 3pm — from ₦2,500</span></div></div>
+            <div className="drow"><span className="ficon"><span dangerouslySetInnerHTML={{ __html: Icons.truck }} /></span><div><b>Same-day Ibadan</b><span>Order before 3pm — from ₦2,500</span></div></div>
             <div className="drow"><span className="ficon"><span dangerouslySetInnerHTML={{ __html: Icons.wallet }} /></span><div><b>Pay on delivery</b><span>Inspect first, then pay</span></div></div>
             <div className="drow"><span className="ficon"><span dangerouslySetInnerHTML={{ __html: Icons.shield }} /></span><div><b>Fresh guarantee</b><span>Not fresh? We replace it free</span></div></div>
-            <div className="drow"><span className="ficon"><span dangerouslySetInnerHTML={{ __html: Icons.store }} /></span><div><b>Free pickup</b><span>Ogudu market shop, Mon–Sat</span></div></div>
+            <div className="drow"><span className="ficon"><span dangerouslySetInnerHTML={{ __html: Icons.store }} /></span><div><b>Free pickup</b><span>Bodija market shop, Mon–Sat</span></div></div>
           </div>
 
           <div className="pd-perks">

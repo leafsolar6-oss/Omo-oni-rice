@@ -20,7 +20,7 @@ export default function Footer() {
                 <span className="logo-tag">Naija Foodstuff Market</span>
               </span>
             </a>
-            <p>Fresh Nigerian foodstuffs — rice, beans, garri, palm oil and more — hand-picked from the best markets and delivered to your door in Lagos and across Nigeria.</p>
+            <p>Fresh Nigerian foodstuffs — rice, beans, garri, palm oil and more — hand-picked from the best markets and delivered to your door in Ibadan and across Nigeria.</p>
             <div className="social-row">
               <a href="#" aria-label="Instagram"><span dangerouslySetInnerHTML={{ __html: Icons.instagram }} /></a>
               <a href="#" aria-label="Facebook"><span dangerouslySetInnerHTML={{ __html: Icons.facebook }} /></a>
@@ -60,7 +60,7 @@ export default function Footer() {
           <div className="footer-col">
             <h5>Contact Info</h5>
             <ul className="footer-contact">
-              <li><span dangerouslySetInnerHTML={{ __html: Icons.pin }} /><span>Shop 12, Ogudu Market,<br />Ogudu, Lagos, Nigeria</span></li>
+              <li><span dangerouslySetInnerHTML={{ __html: Icons.pin }} /><span>Shop 12, Bodija Market,<br />Bodija, Ibadan, Oyo State, Nigeria</span></li>
               <li><span dangerouslySetInnerHTML={{ __html: Icons.phone }} /><span><a href="tel:+2348012345678">+234 801 234 5678</a></span></li>
               <li><span dangerouslySetInnerHTML={{ __html: Icons.mail }} /><span><a href="mailto:hello@omoonirice.ng">hello@omoonirice.ng</a></span></li>
               <li>🕒<span>Mon – Sat: 8:00am – 7:00pm</span></li>
@@ -68,7 +68,7 @@ export default function Footer() {
           </div>
         </div>
         <div className="footer-bottom">
-          <p>© 2026 Omo Oni Rice. All rights reserved. · Made with 💚 in Lagos 🇳🇬</p>
+          <p>© 2026 Omo Oni Rice. All rights reserved. · Made with 💚 in Ibadan 🇳🇬</p>
           <div className="pay-row">
             <span className="pay-pill">Visa</span><span className="pay-pill">Mastercard</span><span className="pay-pill">Verve</span>
             <span className="pay-pill">Bank Transfer</span><span className="pay-pill">Pay on Delivery</span>

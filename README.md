@@ -89,7 +89,7 @@ scripts/reseed.js          # DB reset
 - **Home** — hero, featured categories, purely fresh, featured products, Summer Discount countdown, Deals of the Day, best sellers, testimonials, News & Blogs, FAQ accordion, features band, newsletter
 - **Shop** — category filters, price ranges, sorting, search
 - **Product** — pack-size variants, quantity, add to cart / buy now, related items
-- **Cart → Checkout** — same-day Lagos / next-day / nationwide / pickup; pay on delivery, transfer or card; free-delivery progress bar
+- **Cart → Checkout** — same-day Ibadan / next-day / nationwide / pickup; pay on delivery, transfer or card; free-delivery progress bar
 - **Order tracking** — status timeline (Placed → Confirmed → Packed → On the way → Delivered) + lookup by reference (e.g. `OOR-8F3K2A`)
 - **Admin** — revenue stats & 7-day chart, order status management, product CRUD (variants, images, badges, deals)
 
