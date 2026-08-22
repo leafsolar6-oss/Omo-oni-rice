@@ -1,6 +1,6 @@
 # Omo Oni Rice 🍚
 
-Full-stack Nigerian foodstuff e-commerce site — **Next.js (App Router) + SQLite**.
+Full-stack Nigerian foodstuff e-commerce site — **Next.js (App Router) + Postgres/SQLite**.
 
 Cloned from a grocery-store template design (extracted from a screen recording), rebuilt with Nigerian foodstuffs, ₦ pricing and a complete shop + admin workflow.
 
@@ -8,8 +8,8 @@ Cloned from a grocery-store template design (extracted from a screen recording),
 
 | Layer | Tech |
 |---|---|
-| Framework | Next.js 15 (App Router, React 19) |
-| Backend | Route handlers (`app/api/**`) + server components reading SQLite directly |
+| Framework | Next.js 16 (App Router, React 19) |
+| Backend | Route handlers (`app/api/**`) + server components using the shared data layer |
 | Database | Postgres (`pg`, via `DATABASE_URL`) with SQLite fallback (`better-sqlite3`) — auto-seeded on first run |
 | Styling | Single CSS design system (`app/globals.css`) — white canvas, grocery green `#007848`, amber stars |
 | State | Cart in `localStorage`, admin sessions in DB-backed tokens |
@@ -19,6 +19,7 @@ Cloned from a grocery-store template design (extracted from a screen recording),
 ```bash
 npm install        # install dependencies
 npm run dev        # start dev server → http://localhost:3000
+npm test           # run database/order tests
 npm run build      # production build
 npm start          # run production build
 npm run reseed     # reset database to fresh demo data
