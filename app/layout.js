@@ -9,6 +9,11 @@ export const metadata = {
     'Omo Oni Rice: quality Nigerian foodstuffs — rice, beans, garri, yam, palm oil, pepper and more. Same-day delivery across Ibadan, pay on delivery.',
 };
 
+export const viewport = {
+  width: 'device-width',
+  initialScale: 1,
+};
+
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
