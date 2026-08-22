@@ -41,15 +41,31 @@ const adminFetch = async (path, token, opts = {}) => {
 };
 
 /* ================= Dashboard ================= */
-function DashboardView({ adminApi }) {
+function DashboardView({ adminApi, onResetDemo }) {
   const [stats, setStats] = useState(null);
   const [err, setErr] = useState('');
+  const [resetting, setResetting] = useState(false);
 
   useEffect(() => {
     adminApi('/api/admin/stats')
       .then(setStats)
       .catch((e) => setErr(e.message));
   }, [adminApi]);
+
+  const doReset = async () => {
+    if (!window.confirm(
+      'Reset demo data?\n\nThis DELETES all orders, products, customers and sessions, then restores the fresh demo catalogue (15 products + sample Ibadan orders).\n\nYou will need to sign in again afterwards.'
+    )) return;
+    setResetting(true);
+    try {
+      await adminApi('/api/admin/reseed', { method: 'POST' });
+      toast('Demo data reset ✓ — sign in again');
+      onResetDemo();
+    } catch (e2) {
+      setResetting(false);
+      toast(e2.message, 'error');
+    }
+  };
 
   if (err) return <div className="admin-card"><p className="admin-note">Could not load stats: {err}</p></div>;
   if (!stats) return <p className="admin-note">Loading dashboard…</p>;
@@ -113,6 +129,18 @@ function DashboardView({ adminApi }) {
             </tbody>
           </table>
         </div>
+      </div>
+
+      <div className="admin-card" style={{ marginTop: 16 }}>
+        <h3>⚠️ Danger zone</h3>
+        <p className="admin-note" style={{ marginBottom: 12 }}>
+          Wipes every order, customer record and product edit, then restores the fresh demo
+          catalogue with sample Ibadan orders. Useful after changing the seed data (e.g. the
+          Bodija move) or clearing out test orders.
+        </p>
+        <button className="btn btn-danger btn-sm" onClick={doReset} disabled={resetting}>
+          {resetting ? 'Resetting…' : 'Reset demo data'}
+        </button>
       </div>
     </>
   );
@@ -578,7 +606,16 @@ export default function AdminPage() {
             <div className="right"><span className="admin-note">Signed in as admin</span></div>
           </div>
 
-          {tab === 'dashboard' && <DashboardView adminApi={adminApi} />}
+          {tab === 'dashboard' && (
+            <DashboardView
+              adminApi={adminApi}
+              onResetDemo={() => {
+                // reseed drops the sessions table — sign back in
+                sessionStorage.removeItem(TOKEN_KEY);
+                setToken(null);
+              }}
+            />
+          )}
           {tab === 'orders' && <OrdersView adminApi={adminApi} onViewOrder={(id) => setModal({ kind: 'order', id })} />}
           {tab === 'products' && (
             <ProductsView
