@@ -93,6 +93,35 @@ scripts/reseed.js          # DB reset
 - **Order tracking** — status timeline (Placed → Confirmed → Packed → On the way → Delivered) + lookup by reference (e.g. `OOR-8F3K2A`)
 - **Admin** — revenue stats & 7-day chart, order status management, product CRUD (variants, images, badges, deals)
 
+## Deploying to Vercel ▲
+
+The app runs on Vercel with zero configuration — just import the GitHub repo at
+[vercel.com/new](https://vercel.com/new) (Next.js is auto-detected, build command
+`npm run build`, output `.next`).
+
+1. **Environment variables** (Project → Settings → Environment Variables):
+
+   | Name | Value |
+   |---|---|
+   | `PAYSTACK_SECRET_KEY` | your Paystack secret key (`sk_test_…` / `sk_live_…`) |
+   | `NEXT_PUBLIC_PAYSTACK_PUBLIC_KEY` | your Paystack public key (`pk_test_…` / `pk_live_…`) |
+
+   Without these, card checkout runs in clearly-labelled demo mode.
+
+2. **Deploy** — every push to `main` triggers an automatic redeploy.
+
+### ⚠️ About the database on Vercel
+
+Vercel's filesystem is read-only, so the SQLite file lives in `/tmp`: the store
+**works perfectly as a demo**, but `/tmp` is per-instance and wiped on cold starts —
+orders, product edits and admin changes will reset. For real production use,
+migrate to a hosted database:
+
+- **[Neon](https://neon.tech)** or **Vercel Postgres** (serverless Postgres) — recommended
+- **Supabase** (Postgres + auth) or **Turso** (SQLite-compatible, nearest drop-in)
+
+(That's a `lib/db.js` rewrite — happy to do it as a next step.)
+
 ## Pushing to GitHub
 
 ```bash
