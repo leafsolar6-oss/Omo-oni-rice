@@ -10,7 +10,7 @@ Cloned from a grocery-store template design (extracted from a screen recording),
 |---|---|
 | Framework | Next.js 15 (App Router, React 19) |
 | Backend | Route handlers (`app/api/**`) + server components reading SQLite directly |
-| Database | SQLite via `better-sqlite3` (auto-seeded on first run) |
+| Database | Postgres (`pg`, via `DATABASE_URL`) with SQLite fallback (`better-sqlite3`) — auto-seeded on first run |
 | Styling | Single CSS design system (`app/globals.css`) — white canvas, grocery green `#007848`, amber stars |
 | State | Cart in `localStorage`, admin sessions in DB-backed tokens |
 
@@ -75,7 +75,7 @@ app/
     admin/ (login, logout, stats, orders, products)
 components/                # Header, Footer, ProductCard, Countdown, Faq, ...
 lib/
-  db.js                    # SQLite schema, seed data, query layer
+  db.js                    # data layer — Postgres + SQLite backends, one async API
   paystack.js              # Paystack initialize + verify (server-side)
   auth.js                  # admin session tokens (DB-backed)
   client.js                # client utils (toast, cart, fetch)
@@ -99,28 +99,31 @@ The app runs on Vercel with zero configuration — just import the GitHub repo a
 [vercel.com/new](https://vercel.com/new) (Next.js is auto-detected, build command
 `npm run build`, output `.next`).
 
-1. **Environment variables** (Project → Settings → Environment Variables):
+1. **Create a database** (production): the store works out of the box as a demo,
+   but for persistent data create a free **Neon** database at [neon.tech](https://neon.tech)
+   (or add **Vercel Postgres** from the Vercel marketplace) and copy its connection string.
+
+2. **Environment variables** (Project → Settings → Environment Variables):
 
    | Name | Value |
    |---|---|
+   | `DATABASE_URL` | your Postgres connection string, e.g. `postgresql://user:pass@ep-xxx.aws.neon.tech/neondb?sslmode=require` |
    | `PAYSTACK_SECRET_KEY` | your Paystack secret key (`sk_test_…` / `sk_live_…`) |
    | `NEXT_PUBLIC_PAYSTACK_PUBLIC_KEY` | your Paystack public key (`pk_test_…` / `pk_live_…`) |
 
-   Without these, card checkout runs in clearly-labelled demo mode.
+   Tables are **created and seeded automatically** on the first request — no manual setup.
 
-2. **Deploy** — every push to `main` triggers an automatic redeploy.
+3. **Deploy** — every push to `main` triggers an automatic redeploy.
 
-### ⚠️ About the database on Vercel
+### Database backends
 
-Vercel's filesystem is read-only, so the SQLite file lives in `/tmp`: the store
-**works perfectly as a demo**, but `/tmp` is per-instance and wiped on cold starts —
-orders, product edits and admin changes will reset. For real production use,
-migrate to a hosted database:
+| Scenario | Backend | Behaviour |
+|---|---|---|
+| `DATABASE_URL` set (recommended on Vercel) | **Postgres** (Neon / Vercel Postgres) | Fully persistent — orders, products and admin changes survive restarts and work across serverless instances |
+| No `DATABASE_URL` | SQLite | Local dev: `data/store.db` on disk. On Vercel: ephemeral file in `/tmp` — reseeds on cold starts (fine for demoing) |
 
-- **[Neon](https://neon.tech)** or **Vercel Postgres** (serverless Postgres) — recommended
-- **Supabase** (Postgres + auth) or **Turso** (SQLite-compatible, nearest drop-in)
-
-(That's a `lib/db.js` rewrite — happy to do it as a next step.)
+The whole data layer (`lib/db.js`) is written against one async API with both
+backends implemented — switching is purely a matter of the environment variable.
 
 ## Pushing to GitHub
 

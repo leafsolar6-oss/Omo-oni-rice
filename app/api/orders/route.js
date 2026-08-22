@@ -6,7 +6,7 @@ export const dynamic = 'force-dynamic';
 export async function POST(request) {
   try {
     const body = await request.json().catch(() => ({}));
-    const order = createOrder(body);
+    const order = await createOrder(body);
 
     // Card payments: start a Paystack transaction for this order
     let paystack = null;

@@ -1,5 +1,6 @@
-// Reset the SQLite database to fresh demo data: node scripts/reseed.js
-import { seed } from '../lib/db.js';
+// Reset the database to fresh demo data: node scripts/reseed.js
+// Uses Postgres when DATABASE_URL is set, SQLite otherwise.
+import { seed, USE_POSTGRES } from '../lib/db.js';
 
-seed(true);
-console.log('✅ Database reseeded.');
+await seed(true);
+console.log(`✅ Database reseeded (${USE_POSTGRES ? 'Postgres' : 'SQLite'}).`);

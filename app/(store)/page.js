@@ -13,11 +13,11 @@ const CAT_BADGES = {
 };
 
 export default async function HomePage() {
-  const cats = getCategories().filter((c) => c.product_count > 0);
-  const fresh = getProducts({ category: 'fresh-produce', limit: 4 });
-  const featured = getProducts({ featured: 1, limit: 8 });
-  const deals = getProducts({ deal: 1, limit: 3 });
-  const best = getProducts({ sort: 'rating', limit: 4 });
+  const cats = (await getCategories()).filter((c) => c.product_count > 0);
+  const fresh = await getProducts({ category: 'fresh-produce', limit: 4 });
+  const featured = await getProducts({ featured: 1, limit: 8 });
+  const deals = await getProducts({ deal: 1, limit: 3 });
+  const best = await getProducts({ sort: 'rating', limit: 4 });
 
   return (
     <>

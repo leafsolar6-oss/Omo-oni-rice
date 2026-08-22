@@ -14,7 +14,7 @@ export async function POST(request) {
   try {
     const { reference } = await request.json().catch(() => ({}));
     const ref = String(reference || '').trim().toUpperCase();
-    const found = getOrderByRef(ref);
+    const found = await getOrderByRef(ref);
     if (!found) {
       return Response.json({ ok: false, message: 'Order not found' }, { status: 404 });
     }
@@ -33,12 +33,12 @@ export async function POST(request) {
       if (tx.amount !== expected) {
         return Response.json({ ok: false, message: 'Payment amount mismatch. Please contact support.' }, { status: 402 });
       }
-      markOrderPaid(ref);
+      await markOrderPaid(ref);
       return Response.json({ ok: true, paid: true, demo: false });
     }
 
     // Demo mode — no Paystack keys configured on this server
-    markOrderPaid(ref);
+    await markOrderPaid(ref);
     return Response.json({ ok: true, paid: true, demo: true });
   } catch (e) {
     return Response.json({ ok: false, message: e.message }, { status: 400 });

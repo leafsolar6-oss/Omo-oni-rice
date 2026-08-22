@@ -5,13 +5,13 @@ export const dynamic = 'force-dynamic';
 
 export async function generateMetadata({ params }) {
   const { id } = await params;
-  const product = getProduct(Number(id));
+  const product = await getProduct(Number(id));
   return { title: product ? product.name : 'Product not found' };
 }
 
 export default async function ProductPage({ params }) {
   const { id } = await params;
-  const product = getProduct(Number(id));
+  const product = await getProduct(Number(id));
 
   if (!product) {
     return (
@@ -25,7 +25,7 @@ export default async function ProductPage({ params }) {
     );
   }
 
-  const related = getRelated(product);
+  const related = await getRelated(product);
 
   return (
     <div className="container">

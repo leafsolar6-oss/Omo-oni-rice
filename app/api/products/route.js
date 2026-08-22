@@ -4,7 +4,7 @@ export const dynamic = 'force-dynamic';
 
 export async function GET(request) {
   const sp = request.nextUrl.searchParams;
-  const products = getProducts({
+  const products = await getProducts({
     category: sp.get('category'),
     search: sp.get('search'),
     sort: sp.get('sort'),
