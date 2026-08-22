@@ -22,6 +22,7 @@ export default function Footer() {
             </a>
             <p>Fresh Nigerian foodstuffs — rice, beans, garri, palm oil and more — hand-picked from the best markets and delivered to your door in Ibadan and across Nigeria.</p>
             <div className="social-row">
+              <a href="https://www.tiktok.com/@hee_sha1313" target="_blank" rel="noreferrer" aria-label="TikTok"><span dangerouslySetInnerHTML={{ __html: Icons.tiktok }} /></a>
               <a href="#" aria-label="Instagram"><span dangerouslySetInnerHTML={{ __html: Icons.instagram }} /></a>
               <a href="#" aria-label="Facebook"><span dangerouslySetInnerHTML={{ __html: Icons.facebook }} /></a>
               <a href="#" aria-label="Twitter / X"><span dangerouslySetInnerHTML={{ __html: Icons.twitter }} /></a>
@@ -63,6 +64,7 @@ export default function Footer() {
               <li><span dangerouslySetInnerHTML={{ __html: Icons.pin }} /><span>Shop 12, Bodija Market,<br />Bodija, Ibadan, Oyo State, Nigeria</span></li>
               <li><span dangerouslySetInnerHTML={{ __html: Icons.phone }} /><span><a href="tel:+2348012345678">+234 801 234 5678</a></span></li>
               <li><span dangerouslySetInnerHTML={{ __html: Icons.mail }} /><span><a href="mailto:hello@omoonirice.ng">hello@omoonirice.ng</a></span></li>
+              <li><span dangerouslySetInnerHTML={{ __html: Icons.tiktok }} /><span><a href="https://www.tiktok.com/@hee_sha1313" target="_blank" rel="noreferrer">TikTok: @hee_sha1313</a></span></li>
               <li>🕒<span>Mon – Sat: 8:00am – 7:00pm</span></li>
             </ul>
           </div>

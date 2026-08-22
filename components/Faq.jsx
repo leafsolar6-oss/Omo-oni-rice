@@ -21,7 +21,7 @@ const FAQS = [
   },
   {
     q: 'How can I provide feedback about my experience?',
-    a: 'We love feedback! Reach us on WhatsApp or call +234 801 234 5678, email hello@omoonirice.ng, or tell the rider when they deliver. Every comment helps us serve you better.',
+    a: 'We love feedback! Reach us on WhatsApp, DM us on TikTok @hee_sha1313, call +234 801 234 5678, email hello@omoonirice.ng, or tell the rider when they deliver. Every comment helps us serve you better.',
   },
   {
     q: 'Do you offer bulk ordering for events or businesses?',
