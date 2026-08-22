@@ -79,8 +79,17 @@ function OrderInner() {
         <h1>{isNew ? 'Order placed successfully! 🎉' : 'Order details'}</h1>
         <p>{isNew ? 'We have received your order and our team is getting it ready.' : 'Here is the current status of your order.'}</p>
         <span className="order-ref">{order.ref}</span>
-        <div style={{ marginTop: 14 }}>
+        <div style={{ marginTop: 14, display: 'flex', gap: 8, justifyContent: 'center', alignItems: 'center', flexWrap: 'wrap' }}>
           <span className={`status-pill ${STATUS_CLASS[order.status] || 'st-pending'}`}>● {order.status}</span>
+          {order.payment_status === 'paid' ? (
+            <span className="status-pill st-delivered">💳 Paid</span>
+          ) : (
+            <>
+              {order.payment_method === 'card' && <span className="status-pill st-pending">⏳ Awaiting payment</span>}
+              {order.payment_method === 'pod' && <span className="badge badge-amber">💵 Pay on delivery</span>}
+              {order.payment_method === 'transfer' && <span className="badge badge-amber">🏦 Pending transfer</span>}
+            </>
+          )}
         </div>
       </div>
 

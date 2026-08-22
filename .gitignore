@@ -14,5 +14,6 @@ data/
 
 # env & misc
 .env*
+!.env.example
 npm-debug.log*
 .DS_Store

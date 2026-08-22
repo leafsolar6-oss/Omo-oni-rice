@@ -62,7 +62,7 @@ function DashboardView({ adminApi }) {
         <div className="stat-card">
           <div className="s-label"><span className="s-ico" style={{ background: '#e5f7ed', color: '#0f7a40' }}>💵</span> Total revenue</div>
           <div className="s-value">{fmt(stats.revenue)}</div>
-          <div className="s-foot">All time (excl. cancelled)</div>
+          <div className="s-foot">All time (excl. cancelled) · {fmt(stats.paidRevenue)} paid online</div>
         </div>
         <div className="stat-card">
           <div className="s-label"><span className="s-ico" style={{ background: '#e5f7ed', color: '#0f7a40' }}>📦</span> Total orders</div>
@@ -169,7 +169,12 @@ function OrdersView({ adminApi, onViewOrder }) {
                 <td className="cell-b">{o.ref}</td>
                 <td>{o.customer_name}<div className="cell-m">{o.phone}</div></td>
                 <td className="cell-m">{o.item_count} item(s)</td>
-                <td className="cell-m">{PAY_NAMES[o.payment_method] || o.payment_method}</td>
+                <td className="cell-m">
+                  {PAY_NAMES[o.payment_method] || o.payment_method}
+                  <div style={{ fontSize: '.74rem', fontWeight: 800, color: o.payment_status === 'paid' ? 'var(--g700)' : 'var(--muted)', marginTop: 2 }}>
+                    {o.payment_status === 'paid' ? '✓ Paid' : 'Unpaid'}
+                  </div>
+                </td>
                 <td className="cell-b">{fmt(o.total)}</td>
                 <td className="cell-m">{new Date(`${o.created_at} UTC`).toLocaleDateString('en-NG', { day: 'numeric', month: 'short' })}</td>
                 <td>
@@ -287,7 +292,10 @@ function OrderModal({ adminApi, id, onClose }) {
         <div style={{ marginBottom: 14 }}>
           <span className={`status-pill ${STATUS_CLASS[order.status]}`}>{order.status}</span>{' '}
           <span className="badge badge-green">{METHOD_NAMES[order.delivery_method] || order.delivery_method}</span>{' '}
-          <span className="badge badge-amber">{PAY_NAMES[order.payment_method] || order.payment_method}</span>
+          <span className="badge badge-amber">{PAY_NAMES[order.payment_method] || order.payment_method}</span>{' '}
+          <span className={`badge ${order.payment_status === 'paid' ? 'badge-green' : 'badge-red'}`}>
+            {order.payment_status === 'paid' ? '💳 Paid' : 'Unpaid'}
+          </span>
         </div>
         <div className="od-grid" style={{ marginBottom: 16 }}>
           <div className="od-block"><b>Customer</b><p>{order.customer_name}<br />{order.phone}{order.email ? <><br />{order.email}</> : null}</p></div>

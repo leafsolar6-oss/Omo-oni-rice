@@ -17,7 +17,7 @@ const METHODS = [
 const PAYMENTS = [
   { key: 'pod', icon: Icons.cash, name: 'Pay on delivery', desc: 'Inspect your items, then pay cash or transfer.' },
   { key: 'transfer', icon: Icons.bank, name: 'Bank transfer', desc: 'Send ahead to our GTBank account — confirmation on delivery.' },
-  { key: 'card', icon: Icons.card, name: 'Card payment', desc: 'Pay securely online with Visa, Mastercard or Verve.' },
+  { key: 'card', icon: Icons.card, name: 'Card payment', desc: 'Pay securely with Paystack — Visa, Mastercard, Verve, transfer & USSD.' },
 ];
 
 const feeFor = (key, subtotal) => {
@@ -27,6 +27,21 @@ const feeFor = (key, subtotal) => {
   return m.fee;
 };
 
+/* ---- Paystack inline popup (loads the official script on demand) ---- */
+function loadPaystackScript(timeoutMs = 15000) {
+  return new Promise((resolve, reject) => {
+    if (typeof window !== 'undefined' && window.PaystackPop) return resolve();
+    let done = false;
+    const s = document.createElement('script');
+    s.src = 'https://js.paystack.co/v2/inline.js';
+    s.async = true;
+    s.onload = () => { if (!done) { done = true; resolve(); } };
+    s.onerror = () => { if (!done) { done = true; reject(new Error('Could not load Paystack')); } };
+    document.head.appendChild(s);
+    setTimeout(() => { if (!done) { done = true; reject(new Error('Paystack took too long to load')); } }, timeoutMs);
+  });
+}
+
 export default function CheckoutPage() {
   const router = useRouter();
   const [cart, setCart] = useState([]);
@@ -35,20 +50,27 @@ export default function CheckoutPage() {
   const [methodKey, setMethodKey] = useState('same_day');
   const [payKey, setPayKey] = useState('pod');
   const [placing, setPlacing] = useState(false);
+  const [paystackCfg, setPaystackCfg] = useState(null);
+  const [demoRef, setDemoRef] = useState(null);
+  const [demoPaying, setDemoPaying] = useState(false);
 
   useEffect(() => {
     const c = getCart();
     setCart(c);
-    if (!c.length) { setLoading(false); return; }
-    const ids = c.map((i) => i.id).join(',');
-    api(`/api/products?ids=${ids}&limit=100`)
-      .then((d) => {
-        const by = {};
-        d.products.forEach((p) => { by[p.id] = p; });
-        setProds(by);
-        setLoading(false);
-      })
-      .catch((e) => { toast(e.message, 'error'); setLoading(false); });
+    if (!c.length) { setLoading(false); } else {
+      const ids = c.map((i) => i.id).join(',');
+      api(`/api/products?ids=${ids}&limit=100`)
+        .then((d) => {
+          const by = {};
+          d.products.forEach((p) => { by[p.id] = p; });
+          setProds(by);
+          setLoading(false);
+        })
+        .catch((e) => { toast(e.message, 'error'); setLoading(false); });
+    }
+    api('/api/paystack/config')
+      .then((d) => setPaystackCfg(d))
+      .catch(() => setPaystackCfg({ configured: false }));
   }, []);
 
   const rows = cart.map((item) => ({ item, product: prods[item.id] })).filter((r) => r.product);
@@ -59,18 +81,29 @@ export default function CheckoutPage() {
   const fee = feeFor(methodKey, subtotal);
   const total = subtotal + fee;
 
-  if (!loading && !cart.length) {
-    return (
-      <div className="container">
-        <div className="empty-state">
-          <div className="es-icon" style={{ fontSize: '2.6rem' }}>🛒</div>
-          <h3>Nothing to checkout</h3>
-          <p>Your cart is empty. Add some foodstuffs first.</p>
-          <a className="btn btn-primary btn-lg" href="/shop">Start shopping</a>
-        </div>
-      </div>
-    );
-  }
+  const finishOrder = (ref) => router.push(`/order?ref=${encodeURIComponent(ref)}`);
+
+  /* Real Paystack popup */
+  const openPaystack = async (paystack, ref) => {
+    try {
+      await loadPaystackScript();
+      const handler = window.PaystackPop.new({
+        key: paystackCfg.publicKey,
+        accessCode: paystack.access_code,
+        onSuccess: async () => {
+          try { await api('/api/paystack/verify', { method: 'POST', body: { reference: ref } }); }
+          catch (e) { toast(e.message, 'error'); }
+          finishOrder(ref);
+        },
+        onCancel: () => finishOrder(ref),
+      });
+      handler.openIframe();
+    } catch (err) {
+      // Fallback: full-page Paystack checkout redirect
+      toast('Opening Paystack…');
+      window.location.href = paystack.authorization_url;
+    }
+  };
 
   const placeOrder = async (e) => {
     e.preventDefault();
@@ -87,6 +120,9 @@ export default function CheckoutPage() {
 
     if (!name) return toast('Please enter your full name', 'error');
     if (!/^[0-9+\-() ]{7,16}$/.test(phone)) return toast('Please enter a valid phone number', 'error');
+    if (payKey === 'card' && !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)) {
+      return toast('Enter your email to pay with card (Paystack sends your receipt there)', 'error');
+    }
     if (methodKey !== 'pickup' && (!address || !city)) return toast('Please enter your delivery address and area', 'error');
 
     setPlacing(true);
@@ -103,12 +139,42 @@ export default function CheckoutPage() {
       });
       saveCart([]);
       window.dispatchEvent(new Event('cart-updated'));
-      router.push(`/order?ref=${encodeURIComponent(res.order.ref)}`);
+
+      const ref = res.order.ref;
+      if (payKey === 'card') {
+        if (res.paystack && res.paystack.access_code) {
+          openPaystack(res.paystack, ref);
+        } else if (!res.paystack_configured) {
+          setDemoRef(ref); // demo mode — no keys on this server
+        } else {
+          toast(res.paystack_error || 'Could not start the payment', 'error');
+          finishOrder(ref); // order kept as pending — user can follow up
+        }
+        return;
+      }
+      finishOrder(ref);
     } catch (err) {
       setPlacing(false);
       toast(err.message, 'error');
     }
   };
+
+  if (!loading && !cart.length) {
+    return (
+      <div className="container">
+        <div className="empty-state">
+          <div className="es-icon" style={{ fontSize: '2.6rem' }}>🛒</div>
+          <h3>Nothing to checkout</h3>
+          <p>Your cart is empty. Add some foodstuffs first.</p>
+          <a className="btn btn-primary btn-lg" href="/shop">Start shopping</a>
+        </div>
+      </div>
+    );
+  }
+
+  const cardDisabledNote = payKey === 'card' && paystackCfg && !paystackCfg.configured
+    ? '🧪 Paystack keys not set on this server — you will see the demo payment flow.'
+    : null;
 
   return (
     <div className="container">
@@ -124,8 +190,8 @@ export default function CheckoutPage() {
               <div className="field"><label htmlFor="f-phone">Phone number *</label><input className="input" id="f-phone" name="phone" type="tel" placeholder="e.g. 0803 123 4567" required /></div>
             </div>
             <div className="field" style={{ marginBottom: 0 }}>
-              <label htmlFor="f-email">Email (for order updates)</label>
-              <input className="input" id="f-email" name="email" type="email" placeholder="you@example.com" />
+              <label htmlFor="f-email">Email {payKey === 'card' ? '* (Paystack sends your receipt here)' : '(for order updates)'}</label>
+              <input className="input" id="f-email" name="email" type="email" placeholder="you@example.com" required={payKey === 'card'} />
             </div>
           </div>
 
@@ -173,11 +239,12 @@ export default function CheckoutPage() {
                 <label className={`method-card ${m.key === payKey ? 'active' : ''}`} key={m.key} onClick={() => setPayKey(m.key)}>
                   <input type="radio" name="payment" readOnly checked={m.key === payKey} />
                   <span className="ficon"><span dangerouslySetInnerHTML={{ __html: m.icon }} /></span>
-                  <div className="m-head"><b>{m.name}</b></div>
+                  <div className="m-head"><b>{m.name}</b>{m.key === 'card' && <span className="badge badge-green">Paystack</span>}</div>
                   <small>{m.desc}</small>
                 </label>
               ))}
             </div>
+            {cardDisabledNote && <p className="admin-note" style={{ marginTop: 12 }}>{cardDisabledNote}</p>}
           </div>
 
           <div className="co-section">
@@ -225,10 +292,46 @@ export default function CheckoutPage() {
               </button>
               <a className="btn btn-ghost btn-block" href="/cart">← Back to cart</a>
             </div>
-            <div className="secure-note">🛡️ Your details are secure · Freshness guaranteed</div>
+            <div className="secure-note">🛡️ Card payments secured by Paystack · Freshness guaranteed</div>
           </div>
         </aside>
       </div>
+
+      {/* Paystack demo mode modal — shown only when no keys are configured */}
+      {demoRef && (
+        <div className="modal-backdrop" onClick={() => { if (!demoPaying) { setDemoRef(null); finishOrder(demoRef); } }}>
+          <div className="modal" style={{ maxWidth: 460 }}>
+            <h3>Paystack demo payment <button className="close-x" onClick={() => { setDemoRef(null); finishOrder(demoRef); }}>✕</button></h3>
+            <p className="admin-note" style={{ marginBottom: 14 }}>
+              🧪 <b>Demo mode.</b> No Paystack keys are configured on this server (.env.local).
+              This simulates the card payment step. With real keys, the official Paystack
+              checkout opens here instead.
+            </p>
+            <div className="sum-row"><span>Order</span><span className="cell-b">{demoRef}</span></div>
+            <div className="sum-row total"><span>Amount</span><b>{fmt(total)}</b></div>
+            <div className="m-foot">
+              <button className="btn btn-ghost" disabled={demoPaying} onClick={() => { setDemoRef(null); finishOrder(demoRef); }}>Cancel</button>
+              <button
+                className="btn btn-primary"
+                disabled={demoPaying}
+                onClick={async () => {
+                  setDemoPaying(true);
+                  try {
+                    const res = await api('/api/paystack/verify', { method: 'POST', body: { reference: demoRef } });
+                    toast(res.demo ? 'Demo payment successful ✓' : 'Payment confirmed ✓');
+                    finishOrder(demoRef);
+                  } catch (err) {
+                    setDemoPaying(false);
+                    toast(err.message, 'error');
+                  }
+                }}
+              >
+                {demoPaying ? 'Processing…' : `💳 Pay ${fmt(total)} (demo)`}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
