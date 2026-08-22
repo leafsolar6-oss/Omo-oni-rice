@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400">
+  <rect width="400" height="400" fill="#e5f7ed"/>
+  <circle cx="200" cy="190" r="70" fill="#c9eedb"/>
+  <text x="200" y="215" font-size="72" text-anchor="middle">🍚</text>
+  <text x="200" y="330" font-size="20" font-family="sans-serif" font-weight="700" fill="#0f7a40" text-anchor="middle">Omo Oni Rice</text>
+</svg>
