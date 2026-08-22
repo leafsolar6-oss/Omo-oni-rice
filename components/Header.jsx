@@ -58,6 +58,9 @@ export default function Header() {
       </div>
       <header className="site-header">
         <div className="container header-inner">
+          <button className="icon-btn menu-btn" onClick={() => setMenuOpen(true)} aria-label="Open menu">
+            <span dangerouslySetInnerHTML={{ __html: Icons.menu }} />
+          </button>
           <Logo />
           <nav className="main-nav" aria-label="Main navigation">
             {links.map((l) => (
@@ -80,9 +83,6 @@ export default function Header() {
               <span dangerouslySetInnerHTML={{ __html: Icons.cart }} />
               {count > 0 && <span className="cart-count">{count}</span>}
             </a>
-            <button className="icon-btn menu-btn" onClick={() => setMenuOpen(true)} aria-label="Open menu">
-              <span dangerouslySetInnerHTML={{ __html: Icons.menu }} />
-            </button>
           </div>
         </div>
       </header>

@@ -682,6 +682,7 @@ input, select, textarea { font-family: inherit; font-size: 1rem; }
   .aside-sep { display: none; }
 }
 @media (max-width: 680px) {
+  .header-inner { gap: 12px; }
   .header-search { display: none; }
   .product-grid, .product-grid.cols-3 { grid-template-columns: repeat(2, 1fr); gap: 13px; }
   .cat-row { grid-template-columns: repeat(2, 1fr); }
