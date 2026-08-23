@@ -95,6 +95,12 @@ public/img/                # product photography + hero
 scripts/reseed.js          # DB reset
 ```
 
+## Current catalogue
+
+The live catalogue contains 25 requested products: Rice, Beans, Spaghetti, Noodles, Garri, Elubo, Palm Oil, Vegetable Oil, Three Crowns Milk, Bournvita (Baba Salla), Hypo Fabric Bleach, Hypo Toilet Cleaner, Oral-B Toothpaste, Sack, Oats, Poundo Yam, Onions, Pepper, Egusi, Crayfish, Tomato Paste, Maggi Seasoning Cubes, Salt, Curry Powder and Thyme.
+
+Existing databases migrate to this catalogue automatically on deployment while historical order-item names and prices are preserved.
+
 ## Pages & features
 
 - **Home** — hero, featured categories, purely fresh, featured products, Summer Discount countdown, Deals of the Day, best sellers, testimonials, News & Blogs, FAQ accordion, features band, newsletter

@@ -14,11 +14,14 @@ const STATUS_CLASS = {
 const METHOD_NAMES = { same_day: 'Same-day Ibadan', next_day: 'Next-day Ibadan', nationwide: 'Nationwide', pickup: 'Pickup at Bodija market' };
 const PAY_NAMES = { pod: 'Pay on delivery', transfer: 'Bank transfer', card: 'Card' };
 const PRESET_IMAGES = [
-  '/img/products/rice.jpg', '/img/products/ofada.jpg', '/img/products/beans.jpg',
-  '/img/products/garri.jpg', '/img/products/yam.jpg', '/img/products/palmoil.jpg',
-  '/img/products/groundnutoil.jpg', '/img/products/rodo.jpg', '/img/products/tomatoes.jpg',
-  '/img/products/plantain.jpg', '/img/products/crayfish.jpg', '/img/products/egusi.jpg',
-  '/img/products/stockfish.jpg', '/img/products/semovita.jpg', '/img/products/zobo.jpg',
+  '/img/products/rice.jpg', '/img/products/beans.jpg', '/img/products/spaghetti.svg',
+  '/img/products/noodles.svg', '/img/products/garri.jpg', '/img/products/semovita.jpg',
+  '/img/products/palmoil.jpg', '/img/products/groundnutoil.jpg', '/img/products/milk.svg',
+  '/img/products/bournvita.svg', '/img/products/hypo-cloth.svg', '/img/products/hypo-toilet.svg',
+  '/img/products/toothpaste.svg', '/img/products/sack.svg', '/img/products/oats.svg',
+  '/img/products/onions.svg', '/img/products/rodo.jpg', '/img/products/egusi.jpg',
+  '/img/products/crayfish.jpg', '/img/products/tomatoes.jpg', '/img/products/maggi.svg',
+  '/img/products/salt.svg', '/img/products/curry.svg', '/img/products/thyme.svg',
 ];
 
 const adminFetch = async (path, token, opts = {}) => {

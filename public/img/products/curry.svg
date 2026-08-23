@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 600" role="img" aria-labelledby="title">
+<title id="title">Curry Powder</title>
+<defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#fff0c2"/><stop offset="1" stop-color="#ffffff"/></linearGradient></defs>
+<rect width="600" height="600" rx="36" fill="url(#g)"/>
+<circle cx="300" cy="245" r="150" fill="#d89700" opacity=".12"/>
+<text x="300" y="305" font-size="170" text-anchor="middle">🍛</text>
+<rect x="70" y="435" width="460" height="86" rx="24" fill="#d89700"/>
+<text x="300" y="489" font-family="Arial,sans-serif" font-size="30" font-weight="700" fill="#fff" text-anchor="middle">Curry Powder</text>
+<text x="300" y="557" font-family="Arial,sans-serif" font-size="18" font-weight="700" fill="#d89700" text-anchor="middle">OMO ONI RICE</text>
+</svg>
