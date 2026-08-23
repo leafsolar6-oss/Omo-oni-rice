@@ -30,10 +30,24 @@ function OrderInner() {
 
   useEffect(() => {
     if (!ref) return;
-    api(`/api/orders/${encodeURIComponent(ref)}`)
-      .then((d) => { setData(d); setView('order'); })
-      .catch((e) => { toast(e.message, 'error'); setView('lookup'); });
-  }, [ref]);
+    const loadOrder = async () => {
+      // Paystack's full-page checkout fallback returns with reference/trxref.
+      // Verify it before loading the order so the receipt immediately shows
+      // the confirmed payment, just like the inline popup flow.
+      const callbackRef = sp.get('reference') || sp.get('trxref');
+      if (callbackRef && callbackRef.toUpperCase() === ref.toUpperCase()) {
+        try {
+          await api('/api/paystack/verify', { method: 'POST', body: { reference: ref } });
+        } catch (e) {
+          toast(`Payment confirmation pending: ${e.message}`, 'error');
+        }
+      }
+      const d = await api(`/api/orders/${encodeURIComponent(ref)}`);
+      setData(d);
+      setView('order');
+    };
+    loadOrder().catch((e) => { toast(e.message, 'error'); setView('lookup'); });
+  }, [ref, sp]);
 
   const lookup = async (e) => {
     e.preventDefault();

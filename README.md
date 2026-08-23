@@ -41,6 +41,14 @@ PAYSTACK_SECRET_KEY=sk_test_xxxxxxxxxxxxxxxx          # secret — server only
 NEXT_PUBLIC_PAYSTACK_PUBLIC_KEY=pk_test_xxxxxxxxxxxx  # public — used by the popup
 ```
 
+3. In the Paystack dashboard, set the webhook URL to:
+
+```text
+https://YOUR-DOMAIN/api/paystack/webhook
+```
+
+The webhook confirms successful payments even if a customer closes their browser before returning to the store.
+
 - **Test mode** (`sk_test_` / `pk_test_`): use Paystack's [test cards](https://paystack.com/docs/payments/test-payments/) — e.g. `4084 0840 8408 4081`, CVV `408`, any future expiry, PIN `0000`
 - **Live mode**: switch on in the Paystack dashboard and use `sk_live_` / `pk_live_` keys
 
@@ -49,8 +57,10 @@ NEXT_PUBLIC_PAYSTACK_PUBLIC_KEY=pk_test_xxxxxxxxxxxx  # public — used by the p
 1. Customer picks **Card payment** at checkout → the order is created with status `Pending` / `payment_status: unpaid`
 2. The server initializes a Paystack transaction (amount in kobo, order ref as Paystack reference)
 3. The official **Paystack Inline** popup opens (falls back to a full-page redirect if the popup can't load)
-4. On success, the browser calls `POST /api/paystack/verify` → the **server** verifies with Paystack (status + exact amount) and marks the order `paid`, auto-advancing it to `Confirmed`
-5. Admin dashboard shows **Paid / Unpaid** per order and paid revenue
+4. On success, the browser calls `POST /api/paystack/verify`; full-page returns are verified automatically on the order page
+5. Paystack also sends a signed `charge.success` webhook as a browser-independent backup
+6. The server checks status, currency and exact amount, marks the order `paid`, and auto-advances it to `Confirmed`
+7. Admin dashboard shows **Paid / Unpaid** per order and paid revenue
 
 ### Demo mode (no keys)
 
@@ -72,7 +82,7 @@ app/
   admin/page.jsx           # admin SPA (login, dashboard, orders, products)
   api/                     # REST route handlers
     categories/ products/ orders/ newsletter/
-    paystack/ (config, verify)
+    paystack/ (config, verify, webhook)
     admin/ (login, logout, stats, orders, products)
 components/                # Header, Footer, ProductCard, Countdown, Faq, ...
 lib/
