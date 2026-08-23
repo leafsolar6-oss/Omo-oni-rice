@@ -35,7 +35,7 @@ export default function ProductCard({ product }) {
           </div>
           {product.stock > 0
             ? (
-              <button className="add-btn" onClick={() => addToCart(product.id)} aria-label={`Add ${product.name} to cart`}>
+              <button className="add-btn" onClick={() => addToCart(product.id, 0, 1, product.stock)} aria-label={`Add ${product.name} to cart`}>
                 <span dangerouslySetInnerHTML={{ __html: Icons.plus }} />
               </button>
             )

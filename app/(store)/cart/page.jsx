@@ -34,17 +34,45 @@ export default function CartPage() {
   }, 0);
   const toFree = Math.max(0, FREE_DELIVERY_AT - subtotal);
   const pct = Math.min(100, Math.round((subtotal / FREE_DELIVERY_AT) * 100));
+  const productTotals = cart.reduce((totals, item) => {
+    totals[item.id] = (totals[item.id] || 0) + item.qty;
+    return totals;
+  }, {});
+  const unavailableCount = loading ? 0 : cart.filter((item) => !prods[item.id]).length;
+  const overstockedIds = loading ? [] : Object.entries(productTotals)
+    .filter(([id, qty]) => prods[id] && qty > prods[id].stock)
+    .map(([id]) => Number(id));
+  const hasStockIssues = unavailableCount > 0 || overstockedIds.length > 0;
 
   const update = (id, variant, delta, remove = false) => {
     let c = getCart();
     const f = c.find((i) => i.id === id && i.variant === variant);
     if (f) {
-      if (remove || f.qty + delta <= 0) c = c.filter((i) => !(i.id === id && i.variant === variant));
-      else f.qty = Math.min(99, f.qty + delta);
+      if (remove || f.qty + delta <= 0) {
+        c = c.filter((i) => !(i.id === id && i.variant === variant));
+      } else if (delta > 0) {
+        const total = c.filter((i) => i.id === id).reduce((sum, i) => sum + i.qty, 0);
+        const stock = Number(prods[id]?.stock || 0);
+        if (total >= stock) {
+          toast(`Only ${stock} item(s) of this product are available`, 'error');
+          return;
+        }
+        f.qty += Math.min(delta, stock - total);
+      } else {
+        f.qty = Math.min(99, f.qty + delta);
+      }
     }
     saveCart(c);
     setCart([...c]);
     window.dispatchEvent(new Event('cart-updated'));
+  };
+
+  const removeUnavailable = () => {
+    const next = getCart().filter((item) => prods[item.id]);
+    saveCart(next);
+    setCart(next);
+    window.dispatchEvent(new Event('cart-updated'));
+    toast('Unavailable items removed');
   };
 
   if (!cart.length) {
@@ -71,6 +99,12 @@ export default function CartPage() {
         <div>
           <div className="cart-card">
             {loading && <p style={{ color: 'var(--muted)' }}>Loading your items…</p>}
+            {!loading && unavailableCount > 0 && (
+              <div style={{ padding: 14, marginBottom: 12, borderRadius: 10, background: '#fff1f1', color: 'var(--red)', fontWeight: 700 }}>
+                {unavailableCount} cart item(s) are no longer available.{' '}
+                <button className="ci-remove" onClick={removeUnavailable}>Remove them</button>
+              </div>
+            )}
             {!loading && rows.map(({ item, product }) => {
               const v = product.variants[item.variant] || product.variants[0];
               return (
@@ -81,6 +115,11 @@ export default function CartPage() {
                   <div>
                     <div className="ci-name"><a href={`/product/${product.id}`}>{product.name}</a></div>
                     <div className="ci-variant">{v.label} · {fmt(v.price)} each</div>
+                    {overstockedIds.includes(product.id) && (
+                      <div style={{ color: 'var(--red)', fontSize: '.78rem', fontWeight: 800, marginTop: 5 }}>
+                        Only {product.stock} available across all pack sizes — reduce the quantity.
+                      </div>
+                    )}
                     <div className="qty-stepper" style={{ marginTop: 9 }}>
                       <button onClick={() => update(product.id, item.variant, -1)} aria-label="Decrease quantity">−</button>
                       <span>{item.qty}</span>
@@ -115,7 +154,9 @@ export default function CartPage() {
             <div className="sum-row"><span>Delivery</span><span style={{ color: 'var(--muted)' }}>Calculated at checkout</span></div>
             <div className="sum-row total"><span>Total</span><b>{fmt(subtotal)}</b></div>
             <div className="summary-cta">
-              <a className="btn btn-primary btn-lg btn-block" href="/checkout">Proceed to checkout →</a>
+              {hasStockIssues
+                ? <button className="btn btn-primary btn-lg btn-block" disabled>Resolve stock issues to continue</button>
+                : <a className="btn btn-primary btn-lg btn-block" href="/checkout">Proceed to checkout →</a>}
             </div>
             <div className="pay-note">🛡️ Pay on delivery · Bank transfer · Card</div>
           </div>

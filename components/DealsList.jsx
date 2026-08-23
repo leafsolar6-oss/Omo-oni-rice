@@ -33,7 +33,7 @@ export default function DealsList({ deals }) {
               </div>
             </div>
             {p.stock > 0 && (
-              <button className="add-btn" onClick={() => addToCart(p.id)} aria-label={`Add ${p.name} to cart`}>
+              <button className="add-btn" onClick={() => addToCart(p.id, 0, 1, p.stock)} aria-label={`Add ${p.name} to cart`}>
                 <span dangerouslySetInnerHTML={{ __html: Icons.plus }} />
               </button>
             )}

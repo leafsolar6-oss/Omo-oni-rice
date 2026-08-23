@@ -71,18 +71,20 @@ export default function ProductDetail({ product, related }) {
             <div className="qty-stepper">
               <button onClick={() => setQty(Math.max(1, qty - 1))} aria-label="Decrease quantity">−</button>
               <span>{qty}</span>
-              <button onClick={() => setQty(Math.min(99, qty + 1))} aria-label="Increase quantity">+</button>
+              <button disabled={qty >= product.stock} onClick={() => setQty(Math.min(product.stock, 99, qty + 1))} aria-label="Increase quantity">+</button>
             </div>
           </div>
 
           <div className="buy-row">
-            <button className="btn btn-primary btn-lg" disabled={product.stock <= 0} onClick={() => addToCart(product.id, variantIdx, qty)}>
+            <button className="btn btn-primary btn-lg" disabled={product.stock <= 0} onClick={() => addToCart(product.id, variantIdx, qty, product.stock)}>
               <span dangerouslySetInnerHTML={{ __html: Icons.cart }} /> Add to cart — {fmt(v.price * qty)}
             </button>
             <button
               className="btn btn-amber btn-lg"
               disabled={product.stock <= 0}
-              onClick={() => { addToCart(product.id, variantIdx, qty); setTimeout(() => router.push('/cart'), 400); }}
+              onClick={() => {
+                if (addToCart(product.id, variantIdx, qty, product.stock)) setTimeout(() => router.push('/cart'), 400);
+              }}
             >
               <span dangerouslySetInnerHTML={{ __html: Icons.bolt }} /> Buy now
             </button>
